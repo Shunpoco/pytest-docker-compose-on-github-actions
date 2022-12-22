@@ -22,19 +22,9 @@ jobs:
     #   run: |
     #     docker-compose -f tests/docker-compose.yml down
     - run: |
-        docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
-        docker network ls
-        cd tests/
         export DOCKER_ID=$(docker ps | awk 'NR==2 { print $1 }')
-        # export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range .NetworkSettings.Networks }} {{.NetworkID}} {{end}}')
         export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range $key, $val := .NetworkSettings.Networks }} {{$key}} {{end}}')
-        echo $DOCKER_ID
-        echo $NETWORK_ID
-        # docker run --rm --detach --net ${NETWORK_ID} --name tests_httpbin_1 kennethreitz/httpbin:latest
-        sed -i 's/__NETWORK_ID__/${NETWORK_ID}/g' docker-compose.yml
-        cat docker-compose.yml
-        docker-compose up -d
+        docker run --rm --detach --net ${NETWORK_ID} --name tests_httpbin_1 kennethreitz/httpbin:latest
         sleep 20
-        curl -v http://tests_httpbin_1
-        # docker stop tests_httpbin_1
-        docker-compose down
+        curl -v http://tests_httpbin_1/status/200
+        docker stop tests_httpbin_1
