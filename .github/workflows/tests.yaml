@@ -30,12 +30,13 @@ jobs:
         export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range $key, $val := .NetworkSettings.Networks }} {{$key}} {{end}}')
         echo $DOCKER_ID
         echo $NETWORK_ID
-        sed -i 's/__NETWORK_ID__/${NETWORK_ID}/g' docker-compose.yml
-        cat docker-compose.yml
-        docker-compose up -d
-        sleep 20
-        curl -v http://tests_httpbin_1
-        docker-compose down
+        docker run --rm --net ${NETWORK_ID} kennethreitz/httpbin:latest
+        # sed -i 's/__NETWORK_ID__/${NETWORK_ID}/g' docker-compose.yml
+        # cat docker-compose.yml
+        # docker-compose up -d
+        # sleep 20
+        # curl -v http://tests_httpbin_1
+        # docker-compose down
 
 
         
