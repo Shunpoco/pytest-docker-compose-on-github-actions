@@ -4,4 +4,9 @@ services:
     image: "kennethreitz/httpbin"
     ports:
     - "8080:80"
-    network_mode: "__NETWORK_ID__"
+    # network_mode: "__NETWORK_ID__"
+
+networks:
+  default:
+    name: "__NETWORK_ID__"
+    external: true
