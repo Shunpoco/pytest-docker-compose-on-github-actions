@@ -5,13 +5,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: python:3.9-buster
+      image: shunpoco/cicd-build:latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.9"
+    # - name: Setup Python
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: "3.9"
     - name: Install dependencies
       run: pip install -r requirements.txt
     - name: run test
