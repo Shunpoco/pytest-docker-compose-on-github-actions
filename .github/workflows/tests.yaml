@@ -22,8 +22,8 @@ jobs:
     #   run: |
     #     docker-compose -f tests/docker-compose.yml down
     - run: |
-        # docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
-        # docker network ls
+        docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
+        docker network ls
         cd tests/
         export DOCKER_ID=$(docker ps | awk 'NR==2 { print $1 }')
         export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range .NetworkSettings.Networks }} {{.NetworkID}} {{end}}')
