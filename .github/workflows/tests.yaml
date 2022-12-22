@@ -22,7 +22,7 @@ jobs:
     #   run: |
     #     docker-compose -f tests/docker-compose.yml down
     - run: |
-        docker ps
+        docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
         docker network ls
 
         
