@@ -22,7 +22,16 @@ jobs:
     #   run: |
     #     docker-compose -f tests/docker-compose.yml down
     - run: |
-        docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
-        docker network ls
+        # docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
+        # docker network ls
+        cd tests/
+        export NETWORK_ID=$(docker inspect 90c52d0a0fd7 -f '{{range .NetworkSettings.Networks }} {{.NetworkID}} {{end}}')
+        sed -i 's/__NETWORK_ID__/$NETWORK_ID/g' docker-compose.yml
+        cat docker-compose.yml
+        docker-compose up -d
+        sleep 20
+        curl -v http://tests_httpbin_1
+        docker-compose down
+
 
         
