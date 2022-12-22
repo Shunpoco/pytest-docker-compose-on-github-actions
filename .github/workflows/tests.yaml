@@ -25,8 +25,11 @@ jobs:
         # docker inspect $(docker ps | awk 'NR==2 { print $1 }') -f "{{json .NetworkSettings.Networks }}"
         # docker network ls
         cd tests/
-        export NETWORK_ID=$(docker inspect 90c52d0a0fd7 -f '{{range .NetworkSettings.Networks }} {{.NetworkID}} {{end}}')
-        sed -i 's/__NETWORK_ID__/$NETWORK_ID/g' docker-compose.yml
+        export DOCKER_ID=$(docker ps | aws 'NR==2 { print $1 }')
+        export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range .NetworkSettings.Networks }} {{.NetworkID}} {{end}}')
+        echo $DOCKER_ID
+        echo $NETWORK_ID
+        sed -i 's/__NETWORK_ID__/${NETWORK_ID}/g' docker-compose.yml
         cat docker-compose.yml
         docker-compose up -d
         sleep 20
