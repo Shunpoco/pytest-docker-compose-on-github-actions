@@ -25,12 +25,9 @@ def check(container):
 def container():
     client = docker.from_env()
     run_list = client.containers.list()
-    for c in run_list:
-        print(c.id, c.name)
     if len(run_list) == 0:
         raise Exception
     network = list(run_list[0].attrs["NetworkSettings"]["Networks"].keys())[0]
-    print(network)
     container = client.containers.run(
         "postgres:13.9-bullseye",
         detach=True,
@@ -39,7 +36,6 @@ def container():
         remove=True,
         environment={
             "POSTGRES_PASSWORD": "admin",
-            "POSTGRES_PORT": "80",
         },
     )
 
@@ -57,7 +53,6 @@ def test_status_code(container):
             host="tests_httpbin_1",
             user="postgres",
             password="admin",
-            port="80",
     ) as db:
         with db.cursor() as cur:
             cur.execute("CREATE TABLE IF NOT EXISTS test (id TEXT PRIMARY KEY, name TEXT);")
