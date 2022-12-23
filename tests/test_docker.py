@@ -15,7 +15,6 @@ def wait_until_responsive(func, pause: float, timeout: float = 30.0):
 def check(container):
     try:
         logs = container.logs().decode("UTF-8")
-        print(logs)
         if "database system is ready to accept connections" in logs:
             return True
     except Exception:
@@ -50,6 +49,7 @@ def container():
 
 
 def test_status_code(container):
+    print(container.logs().decode("UTF-8"))
     with psycopg2.connect(
             host="tests_httpbin_1",
             user="postgres",
