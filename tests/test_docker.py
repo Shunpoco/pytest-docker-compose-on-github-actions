@@ -4,21 +4,21 @@ import pytest
 import psycopg2
 
 
-# def wait_until_responsive(func, pause: float, timeout: float = 30.0):
-#     start = time.time()
-#     while not func():
-#         if time.time() - start >= timeout:
-#             raise Exception
-#         time.sleep(pause)
+def wait_until_responsive(func, pause: float, timeout: float = 30.0):
+    start = time.time()
+    while not func():
+        if time.time() - start >= timeout:
+            raise Exception
+        time.sleep(pause)
 
 
-# def check(container):
-#     try:
-#         logs = container.logs().decode("UTF-8")
-#         if "database system is ready to accept connections" in logs:
-#             return True
-#     except Exception:
-#         return False
+def check(container):
+    try:
+        logs = container.logs().decode("UTF-8")
+        if "PostgreSQL init process complete; ready for start up." in logs:
+            return True
+    except Exception:
+        return False
         
 
 @pytest.fixture
@@ -40,7 +40,7 @@ def container():
     )
 
     try:
-        # wait_until_responsive(lambda: check(container), 1.0)
+        wait_until_responsive(lambda: check(container), 1.0)
         time.sleep(20)
         yield container
     except Exception as e:
