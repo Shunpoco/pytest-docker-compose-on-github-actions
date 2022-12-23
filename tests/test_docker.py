@@ -37,7 +37,7 @@ def container():
         remove=True,
         environment={
             "POSTGRES_PASSWORD": "admin",
-            "POSTGRES_PORT": "5432",
+            "POSTGRES_PORT": "80",
         },
     )
 
@@ -55,6 +55,7 @@ def test_status_code(container):
             host="tests_httpbin_1",
             user="postgres",
             password="admin",
+            port="80",
     ) as db:
         with db.cursor() as cur:
             cur.execute("CREATE TABLE IF NOT EXISTS test (id TEXT PRIMARY KEY, name TEXT);")
