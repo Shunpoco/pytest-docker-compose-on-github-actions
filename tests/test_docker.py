@@ -41,6 +41,7 @@ def container():
 
     try:
         wait_until_responsive(lambda: check(container), 1.0)
+        time.sleep(20)
         yield container
     except Exception as e:
         print(e)
