@@ -25,10 +25,12 @@ def check(container):
 def container():
     client = docker.from_env()
     run_list = client.containers.list()
+    for c in run_list:
+        print(c.id, c.name)
     if len(run_list) == 0:
         raise Exception
     network = list(run_list[0].attrs["NetworkSettings"]["Networks"].keys())[0]
-
+    print(network)
     container = client.containers.run(
         "postgres:13.9-bullseye",
         detach=True,
