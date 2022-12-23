@@ -8,23 +8,23 @@ jobs:
       image: shunpoco/cicd-build:latest
     steps:
     - uses: actions/checkout@v2
-    # - name: Setup Python
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: "3.9"
-    # - name: Install dependencies
-    #   run: pip install -r requirements.txt
-    # - name: run test
-    #   shell: bash
-    #   run: |
-    #     pytest -vv tests/
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    - name: run test
+      shell: bash
+      run: |
+        pytest -vv tests/
     # - name: Teardown
     #   run: |
     #     docker-compose -f tests/docker-compose.yml down
-    - run: |
-        export DOCKER_ID=$(docker ps | awk 'NR==2 { print $1 }')
-        export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range $key, $val := .NetworkSettings.Networks }} {{$key}} {{end}}')
-        docker run --rm --detach --net ${NETWORK_ID} --name tests_httpbin_1 kennethreitz/httpbin:latest
-        sleep 20
-        curl -v http://tests_httpbin_1/status/200
-        docker stop tests_httpbin_1
+    # - run: |
+    #     export DOCKER_ID=$(docker ps | awk 'NR==2 { print $1 }')
+    #     export NETWORK_ID=$(docker inspect ${DOCKER_ID} -f '{{range $key, $val := .NetworkSettings.Networks }} {{$key}} {{end}}')
+    #     docker run --rm --detach --net ${NETWORK_ID} --name tests_httpbin_1 kennethreitz/httpbin:latest
+    #     sleep 20
+    #     curl -v http://tests_httpbin_1/status/200
+    #     docker stop tests_httpbin_1
