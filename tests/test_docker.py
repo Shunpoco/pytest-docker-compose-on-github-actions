@@ -4,6 +4,8 @@ import time
 import pytest
 import psycopg2
 
+import app
+
 IS_LOCAL = os.getenv("IS_LOCAL", False)
 LOCAL_PORT = "5434"
 
@@ -73,13 +75,20 @@ def test_status_code(container):
     else:
         host = POSTGRES_HOST
         port = "5432"
-    
+
+    tables = {
+        "user": "CREATE TABLE IF NOT EXISTS user (id TEXT PRIMARY KEY, name TEXT);",
+        "item": "CREATE TABLE IF NOT EXISTS item (id SERIAL PRIMARY KEY, name TEXT, userid TEXT);",
+    }
+
+
     with psycopg2.connect(
-            host=host,
-            port=port,
-            user=POSTGRES_USER,
-            password=POSTGRES_PASSWORD,
+        host=host,
+        port=port,
+        user=POSTGRES_USER,
+        password=POSTGRES_PASSWORD,
     ) as db:
-        with db.cursor() as cur:
-            cur.execute("CREATE TABLE IF NOT EXISTS test (id TEXT PRIMARY KEY, name TEXT);")
-            db.commit()
+        for table, query in tables.items():
+            app.create(db, query)
+            app.drop(db, table)
+            app.create(db, query)
