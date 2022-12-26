@@ -77,7 +77,7 @@ def test_status_code(container):
         port = "5432"
 
     tables = {
-        "user": "CREATE TABLE IF NOT EXISTS user (id TEXT PRIMARY KEY, name TEXT);",
+        "customer": "CREATE TABLE IF NOT EXISTS customer (id TEXT PRIMARY KEY, name TEXT);",
         "item": "CREATE TABLE IF NOT EXISTS item (id SERIAL PRIMARY KEY, name TEXT, userid TEXT);",
     }
 

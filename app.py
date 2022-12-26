@@ -9,7 +9,7 @@ DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 tables = {
-    "user": "CREATE TABLE IF NOT EXISTS user (id TEXT PRIMARY KEY, name TEXT);",
+    "customer": "CREATE TABLE IF NOT EXISTS customer (id TEXT PRIMARY KEY, name TEXT);",
     "item": "CREATE TABLE IF NOT EXISTS item (id SERIAL PRIMARY KEY, name TEXT, userid TEXT);",
 }
 
