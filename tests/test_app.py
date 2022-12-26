@@ -90,5 +90,27 @@ def test_status_code(container):
     ) as db:
         for table, query in tables.items():
             app.create(db, query)
+
+        with db.cursor() as cur:
+            cur.execute("""
+                SELECT
+                  tablename
+                FROM pg_catalog.pg_tables
+                WHERE schemaname != 'pg_catalog'
+                  AND schemaname != 'information_schema';
+            """)
+            for record, in cur:
+                assert record in tables.keys()
+
+        for table in tables.keys():
             app.drop(db, table)
-            app.create(db, query)
+        with db.cursor() as cur:
+            cur.execute("""
+                SELECT
+                  tablename
+                FROM pg_catalog.pg_tables
+                WHERE schemaname != 'pg_catalog'
+                  AND schemaname != 'information_schema';
+            """)
+            for record in cur:
+                raise Exception("Record should be None")
